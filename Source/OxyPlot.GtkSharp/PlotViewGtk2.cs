@@ -4,6 +4,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Cairo;
+
 namespace OxyPlot.GtkSharp
 {
     public partial class PlotView
@@ -39,18 +41,15 @@ namespace OxyPlot.GtkSharp
         /// </summary>
         /// <param name="evnt">The event data.</param>
         /// <returns><c>true</c> if the event was handled, <c>false</c> otherwise.</returns>
-        protected override bool OnExposeEvent(Gdk.EventExpose evnt)
+        protected override bool OnDrawn(Context cr)
         {
-            using (var cr = Gdk.CairoHelper.Create(evnt.Window))
-            {
-                cr.Rectangle(evnt.Area.X, evnt.Area.Y, evnt.Area.Width, evnt.Area.Height);
+                //cr.Rectangle(evnt.Area.X, evnt.Area.Y, evnt.Area.Width, evnt.Area.Height);
                 cr.Clip();
                 this.DrawPlot(cr);
                 if (this.trackerLabel != null && this.trackerLabel.Visible)
                     this.trackerLabel.Parent.QueueDraw();
-            }
 
-            return base.OnExposeEvent(evnt);
+            return true;
         }
     }
 }
